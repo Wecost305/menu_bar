@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Para comportamiento de aplicación -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<!-- Color de tema -->
+<meta name="theme-color" content="#8b0000">
+
+<!-- Ícono para pantalla de inicio -->
+<link rel="icon" href="icon.png" sizes="192x192">
+    <title>Menú Digital | Bar Vibrante</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+	<link rel="manifest" href="manifest.json">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a0a2e, #2d0b3d, #4a0b5e);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(15, 10, 30, 0.9);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(90deg, #ff6b6b, #ff9e58, #ffd166);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1532634922-8fe0b757fb13?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+            opacity: 0.2;
+        }
+        
+        .logo {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo h1 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Navigation */
+        .tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            padding: 0 15px;
+            overflow-x: auto;
+        }
+        
+        .tab {
+            padding: 15px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.7);
+            white-space: nowrap;
+            min-width: max-content;
+        }
+        
+        .tab.active {
+            color: white;
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #ff9e58);
+            border-radius: 2px 2px 0 0;
+        }
+        
+        /* Menu Content */
+        .menu-content {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .category-title {
+            grid-column: 1 / -1;
+            padding: 15px 0;
+            margin-top: 10px;
+            border-bottom: 2px solid;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-title i {
+            margin-right: 12px;
+            font-size: 1.8rem;
+        }
+        
+        /* Menu Items - Compact Design with Images */
+        .menu-item {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            border-left: 4px solid;
+            backdrop-filter: blur(5px);
+            display: flex;
+            gap: 15px;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .item-image {
+            width: 70px;
+            height: 70px;
+            min-width: 70px;
+            border-radius: 10px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .item-image i {
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            flex: 1;
+        }
+        
+        .item-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-left: 15px;
+            color: #ffd166;
+            text-shadow: 0 0 5px rgba(255, 209, 102, 0.3);
+        }
+        
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .item-desc {
+            font-size: 0.9rem;
+            opacity: 0.85;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        
+        .item-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 5px;
+        }
+        
+        .option {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Color Coding */
+        .burgers { border-color: #ff6b6b; }
+        .wings { border-color: #ff9e58; }
+        .fries { border-color: #ffd166; }
+        .pizzas { border-color: #06d6a0; }
+        .drinks { border-color: #118ab2; }
+        
+        .burgers .category-title { color: #ff6b6b; border-color: #ff6b6b; }
+        .wings .category-title { color: #ff9e58; border-color: #ff9e58; }
+        .fries .category-title { color: #ffd166; border-color: #ffd166; }
+        .pizzas .category-title { color: #06d6a0; border-color: #06d6a0; }
+        .drinks .category-title { color: #118ab2; border-color: #118ab2; }
+        
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .contact-info div {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            transform: translateY(-3px);
+            color: #ffd166;
+        }
+        
+        .promo {
+            background: linear-gradient(90deg, #ff6b6b, #ff9e58);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-align: center;
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-info {
+                align-items: center;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+            
+            .logo h1 {
+                font-size: 2rem;
+            }
+            
+            .menu-item {
+                gap: 12px;
+                padding: 12px;
+            }
+            
+            .item-image {
+                width: 60px;
+                height: 60px;
+                min-width: 60px;
+            }
+            
+            .item-image i {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .menu-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .item-header {
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+            }
+            
+            .item-price {
+                margin-left: 0;
+            }
+            
+            .item-options {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <h1><i class="fas fa-beer"></i> BAR VIBRANTE</h1>
+                <p>Comida rápida • Bebidas • Buen ambiente</p>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="tabs">
+            <div class="tab active" data-category="burgers"><i class="fas fa-hamburger"></i> Hamburguesas</div>
+            <div class="tab" data-category="wings"><i class="fas fa-drumstick-bite"></i> Alitas</div>
+            <div class="tab" data-category="fries"><i class="fas fa-french-fries"></i> Papas</div>
+            <div class="tab" data-category="pizzas"><i class="fas fa-pizza-slice"></i> Pizzas</div>
+            <div class="tab" data-category="drinks"><i class="fas fa-glass-cheers"></i> Bebidas</div>
+        </div>
+        
+        <!-- Menu Content -->
+        <div class="menu-content">
+            <!-- Hamburguesas -->
+            <h2 class="category-title"><i class="fas fa-hamburger"></i> Hamburguesas</h2>
+            
+            <div class="menu-item burgers">
+                <div class="item-image" style="background-color: #ff6b6b;">
+                    <i class="fas fa-hamburger"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Clásica BBQ</div>
+                        <div class="item-price">$12.99</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Carne 200g, bacon, queso cheddar, cebolla caramelizada</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-fire"></i> Picante</div>
+                            <div class="option"><i class="fas fa-star"></i> Popular</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item burgers">
+                <div class="item-image" style="background-color: #ff9e58;">
+                    <i class="fas fa-pepper-hot"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Mexicana Picante</div>
+                        <div class="item-price">$13.50</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Carne 200g, guacamole, jalapeños, queso pepper jack</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-pepper-hot"></i> Muy Picante</div>
+                            <div class="option"><i class="fas fa-leaf"></i> Aguacate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item burgers">
+                <div class="item-image" style="background-color: #06d6a0;">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Veggie Delight</div>
+                        <div class="item-price">$11.75</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Garbanzos, quinoa, portobello, espinaca, cilantro</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-seedling"></i> Vegetariana</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item burgers">
+                <div class="item-image" style="background-color: #ff6b6b;">
+                    <i class="fas fa-cheese"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Doble Cheeseburger</div>
+                        <div class="item-price">$14.99</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Doble carne, doble queso, lechuga, tomate, salsa especial</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-star"></i> Popular</div>
+                            <div class="option"><i class="fas fa-cheese"></i> Extra Queso</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Alitas -->
+            <h2 class="category-title wings"><i class="fas fa-drumstick-bite"></i> Alitas de Pollo</h2>
+            
+            <div class="menu-item wings">
+                <div class="item-image" style="background-color: #ff9e58;">
+                    <i class="fas fa-drumstick-bite"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">BBQ Ahumadas</div>
+                        <div class="item-price">$10.99</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">12 piezas con salsa BBQ ahumada, apio</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-star"></i> Popular</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item wings">
+                <div class="item-image" style="background-color: #ff6b6b;">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Buffalo Extremas</div>
+                        <div class="item-price">$11.50</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">12 piezas con salsa Buffalo picante, ranch</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-fire"></i> Picante</div>
+                            <div class="option"><i class="fas fa-bolt"></i> Nuevo</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item wings">
+                <div class="item-image" style="background-color: #ffd166;">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Miel y Ajo</div>
+                        <div class="item-price">$11.25</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">12 piezas glaseadas con salsa de miel y ajo asado</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-heart"></i> Favorita</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Papas -->
+            <h2 class="category-title fries"><i class="fas fa-french-fries"></i> Papas y Acompañamientos</h2>
+            
+            <div class="menu-item fries">
+                <div class="item-image" style="background-color: #ffd166;">
+                    <i class="fas fa-french-fries"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Papas Clásicas</div>
+                        <div class="item-price">$5.99</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Crujientes con sal de mar y perejil</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item fries">
+                <div class="item-image" style="background-color: #ff9e58;">
+                    <i class="fas fa-bacon"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Papas Cheddar & Bacon</div>
+                        <div class="item-price">$8.50</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Con queso cheddar derretido y tocino crujiente</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-star"></i> Favorita</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item fries">
+                <div class="item-image" style="background-color: #ff6b6b;">
+                    <i class="fas fa-cheese"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Nachos Supremos</div>
+                        <div class="item-price">$9.99</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Totopos con queso, guacamole, pico de gallo, frijoles</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-users"></i> Para compartir</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pizzas -->
+            <h2 class="category-title pizzas"><i class="fas fa-pizza-slice"></i> Pizzas Artesanales</h2>
+            
+            <div class="menu-item pizzas">
+                <div class="item-image" style="background-color: #06d6a0;">
+                    <i class="fas fa-pizza-slice"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Pepperoni</div>
+                        <div class="item-price">$14.99</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Salsa de tomate, doble pepperoni, queso mozzarella</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-crown"></i> #1 en ventas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item pizzas">
+                <div class="item-image" style="background-color: #ff9e58;">
+                    <i class="fas fa-pizza-slice"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Hawaiana</div>
+                        <div class="item-price">$15.50</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Jamón, piña asada, queso mozzarella, salsa barbacoa</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item pizzas">
+                <div class="item-image" style="background-color: #06d6a0;">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Vegetariana</div>
+                        <div class="item-price">$15.25</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Pimientos, champiñones, aceitunas, cebolla, espinaca</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-seedling"></i> Vegetariana</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bebidas -->
+            <h2 class="category-title drinks"><i class="fas fa-glass-cheers"></i> Bebidas Refrescantes</h2>
+            
+            <div class="menu-item drinks">
+                <div class="item-image" style="background-color: #118ab2;">
+                    <i class="fas fa-glass"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Refrescos</div>
+                        <div class="item-price">$3.50</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Coca-Cola, Sprite, Fanta, Agua mineral, Tónica</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item drinks">
+                <div class="item-image" style="background-color: #06d6a0;">
+                    <i class="fas fa-glass-martini-alt"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Jugos Naturales</div>
+                        <div class="item-price">$5.00</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Naranja, piña, maracuyá, limonada con menta</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-leaf"></i> Natural</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item drinks">
+                <div class="item-image" style="background-color: #073B4C;">
+                    <i class="fas fa-beer"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Cervezas</div>
+                        <div class="item-price">$6.50</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Selección de IPA, Lager, Stout y Ale artesanales</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-beer"></i> Alcohol</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item drinks">
+                <div class="item-image" style="background-color: #118ab2;">
+                    <i class="fas fa-cocktail"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Cócteles</div>
+                        <div class="item-price">$9.00</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Mojito, Margarita, Piña Colada, Daiquiri</div>
+                        <div class="item-options">
+                            <div class="option"><i class="fas fa-cocktail"></i> Alcohol</div>
+                            <div class="option"><i class="fas fa-sparkles"></i> Especiales</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item drinks">
+                <div class="item-image" style="background-color: #118ab2;">
+                    <i class="fas fa-wine-bottle"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Agua Mineral</div>
+                        <div class="item-price">$2.50</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Con o sin gas, botella 500ml</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item drinks">
+                <div class="item-image" style="background-color: #6F4E37;">
+                    <i class="fas fa-coffee"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-header">
+                        <div class="item-name">Café</div>
+                        <div class="item-price">$3.00</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-desc">Americano, Expreso, Cappuccino</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="contact-info">
+                <div><i class="fas fa-phone-alt"></i> (555) 123-4567</div>
+                <div><i class="fas fa-map-marker-alt"></i> Av. Principal 789</div>
+                <div><i class="fas fa-clock"></i> Lun-Dom: 12:00 - 02:00</div>
+            </div>
+            
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            
+            <div class="promo">
+                <i class="fas fa-tag"></i> Martes de Alitas: 2x1 en todas las alitas después de las 6 PM
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Get category
+                    const category = this.getAttribute('data-category');
+                    
+                    // Scroll to category
+                    document.querySelector(`.category-title.${category}`).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                });
+            });
+            
+            // Add hover effect to menu items
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
